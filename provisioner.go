@@ -142,7 +142,7 @@ func (p *Provisioner) getVersion() error {
 		return err
 	}
 
-	versionRe := regexp.MustCompile(`Fabric (\d+\.\d+[.\d+]*)`)
+	versionRe := regexp.MustCompile(`Fabric3 (\d+\.\d+[.\d+]*)`)
 	matches := versionRe.FindStringSubmatch(string(out))
 	if matches == nil {
 		return fmt.Errorf(
