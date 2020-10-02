@@ -1,11 +1,11 @@
 module github.com/greyfairer/packer-provisioner-fabric
 
-go 1.13
+go 1.15
 
 require (
-	github.com/hashicorp/hcl/v2 v2.2.0
-	github.com/hashicorp/packer v1.5.1
-	github.com/zclconf/go-cty v1.1.2-0.20191126233707-f0f7fd24c4af
-	golang.org/x/crypto v0.0.0-20191202143827-86a70503ff7e
-	gopkg.in/yaml.v2 v2.2.7
+	github.com/hashicorp/hcl/v2 v2.3.0
+	github.com/hashicorp/packer v1.6.1
+	github.com/zclconf/go-cty v1.4.0
+	golang.org/x/crypto v0.0.0-20200422194213-44a606286825
+	gopkg.in/yaml.v2 v2.3.0
 )
