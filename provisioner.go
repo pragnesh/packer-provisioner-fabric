@@ -27,7 +27,7 @@ import (
 	"golang.org/x/crypto/ssh"
 
 	"github.com/hashicorp/hcl/v2/hcldec"
-	common "github.com/hashicorp/packer-plugin-sdk/common"
+	"github.com/hashicorp/packer-plugin-sdk/common"
 	"github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/hashicorp/packer-plugin-sdk/template/config"
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
@@ -147,7 +147,7 @@ func (p *Provisioner) getVersion() error {
 		return err
 	}
 
-	versionRe := regexp.MustCompile(`Fabric3 (\d+\.\d+[.post\d+]*)`)
+	versionRe := regexp.MustCompile(`Fabric[3]* (\d+\.\d+[.(post)?\d+]*)`)
 	matches := versionRe.FindStringSubmatch(string(out))
 	if matches == nil {
 		return fmt.Errorf(
@@ -276,11 +276,16 @@ func (p *Provisioner) executeFabric(ui packer.Ui, comm packer.Communicator, priv
 		p.config.User, p.config.LocalPort)
 	var envvars []string
 
-	args := []string{"-f", fabfile, "-H", hoststring}
+	args := []string{}
+	if p.fabMajVersion < 1 {
+		args = append(args, "-f", fabfile, "-H", hoststring)
+	} else {
+		args = append(args, "-H", hoststring)
+	}
 	if len(privKeyFile) > 0 {
 		args = append(args, "-i", privKeyFile)
 	}
-	if !checkHostKey {
+	if (!checkHostKey && p.fabMajVersion < 1) {
 		args = append(args, "--disable-known-hosts")
 	}
 	args = append(args, p.config.ExtraArguments...)
